@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Juego de la vida</title>
+	<script src="jquery-3.1.1.min.js"></script>
+	<style>
+
+	td {
+    	border: 1px solid black;
+	}
+
+	body{
+		color: white;
+	}
+</style>
+</head>
+<body>
+<script type="text/javascript">
+	var matriz1 =new Array(20);
+	for (var i = 0; i < matriz1.length; i++) {
+		matriz1[i]=new Array(20);
+	}
+
+	var matriz2;
+	document.write("<table style='width:30%'>");
+	for (var y = 0; y < 20; y++) {
+		document.write("<tr id='"+y+"' data-y='"+y+"'>");
+		for (var x = 0; x < 20; x++) {
+			matriz1[x][y]=0;
+			document.write("<td id='"+x+"' data-x='"+x+"'>0</td>");
+		}
+		document.write("</tr>");
+	}
+	document.write("</table>");
+
+	$(document).ready(function(){
+		$('table').on('click','td',function(){
+			$(this).css({"background-color":"black","color":"black"});
+			var x=$(this).data('x');
+			var y=$(this).closest('tr').data('y');
+			matriz1[x][y]=1;
+			console.log(x+","+y);
+		});
+
+		$("#iniciar").on("click",function(){
+			var viva=0;
+			matriz2=matriz1;			
+			while(true){
+				setTimeout(function() {
+					matriz1=matriz2;
+					for (var y = 0; y < 20; y++){
+						for (var x = 0; x < 20; x++){
+							if(x===0 && y===0){
+							//esquina superior izquierda
+								if (matriz1[x][y+1] === 1)
+	                                viva++;
+	                            if (matriz1[x+1][y+1] === 1)
+	                                viva++; 
+	                            if (matriz1[x+1][y] === 1)
+	                                viva++;
+							}else if(x===19 && y===0){
+							//esquina superior derecha
+								if (matriz1[x-1][y] === 1)
+	                                viva++;
+	                            if (matriz1[x-1][y+1] === 1)
+	                                viva++;
+	                            if (matriz1[x][y+1] === 1)
+	                                viva++;
+							}else if(x===19 && y===19){
+							//esquina inferior derecha
+								if (matriz1[x-1][y] === 1)
+	                                viva++;
+	                            if (matriz1[x-1][y-1] === 1)
+	                                viva++;
+	                            if (matriz1[x][y-1] === 1)
+	                                viva++;
+							}else if(x===0 && y===19){
+							//esquina inferior izquierda
+								if (matriz1[x][y-1] === 1)
+	                                viva++;
+	                            if (matriz1[x+1][y-1] === 1)
+	                                viva++;
+	                            if (matriz1[x+1][y] === 1)
+	                                viva++;
+							}else if(x===0 && (y>0 && y<19)){
+							//pared izquierda
+								if (matriz1[x][y-1] === 1)
+	                                viva++;
+	                            if (matriz1[x+1][y-1] === 1)
+	                                viva++;
+	                            if (matriz1[x+1][y] === 1)
+	                                viva++;
+	                            if (matriz1[x+1][y+1] === 1)
+	                                viva++;
+	                            if (matriz1[x][y+1] === 1)
+	                                viva++;
+							}else if((x>0 && x<19) && y===19){
+							//pared inferior
+								if (matriz1[x-1][y] === 1)
+	                                viva++;
+	                            if (matriz1[x-1][y-1] === 1)
+	                                viva++;
+	                            if (matriz1[x][y-1] === 1)
+	                                viva++;
+	                            if (matriz1[x+1][y-1] === 1)
+	                                viva++;
+	                            if (matriz1[x+1][y] === 1)
+	                                viva++;
+							}else if(x===19 && (y>0 && y<19)){
+							//pared derecha
+								if (matriz1[x][y-1] === 1)
+	                                viva++;
+	                            if (matriz1[x-1][y-1] === 1)
+	                                viva++;
+	                            if (matriz1[x-1][y] === 1)
+	                                viva++;
+	                            if (matriz1[x-1][y+1] === 1)
+	                                viva++;
+	                            if (matriz1[x][y+1] === 1)
+	                                viva++;
+							}else if((x>0 && x<19) && y===0){
+							//pared superior
+								if (matriz1[x-1][y] === 1)
+	                                viva++;
+	                            if (matriz1[x-1][y+1] === 1)
+	                                viva++;
+	                            if (matriz1[x][y+1] === 1)
+	                                viva++;
+	                            if (matriz1[x+1][y+1] === 1)
+	                                viva++;
+	                            if (matriz1[x+1][y] === 1)
+	                                viva++;
+							}else{
+							//se encuentra en una area evaluable
+								if (matriz1[x-1][y-1] === 1)
+	                                viva++;
+	                            if (matriz1[x][y-1] === 1)
+	                                viva++;
+	                            if (matriz1[x+1][y-1] === 1)
+	                                viva++;
+	                            if (matriz1[x-1][y] === 1)
+	                                viva++;
+	                            if (matriz1[x+1][y] === 1)
+	                                viva++;
+	                            if (matriz1[x-1][y+1] === 1)
+	                                viva++;
+	                            if (matriz1[x][y+1] === 1)
+	                                viva++;
+	                            if (matriz1[x+1][y+1] === 1)
+	                                viva++; 
+							}
+							
+							if(viva===3){
+								matriz2[x][y]=1;
+								$("#"+y).find("#"+x).css({"background-color":"black","color":"black"});
+							}else if(viva<2 || viva>3){
+								matriz2[x][y]=0;
+								$("#"+y).find("#"+x).css({"background-color":"white","color":"white"});
+							}
+							viva=0;
+						}
+					}
+				}, 2000);
+			}
+		});
+	});
+
+</script>
+<button id=iniciar>Iniciar</button>
+</body>
+</html>
